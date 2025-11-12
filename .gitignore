@@ -2,3 +2,7 @@
 .DS_Store?
 /venv
 /clean_data.csv
+
+.venv/
+
+*.csv
