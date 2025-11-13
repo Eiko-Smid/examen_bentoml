@@ -98,8 +98,9 @@ def train_model(X_train, X_test, y_train, y_test):
     print(f"Test R²:   {test_r2:.4f}")
     print(f"Test RMSE: {test_rmse:.4f}")
 
-    # Retrain on whole dataset and store model in bento
+    # Set model to production state
     if test_r2 > SCORE_THRESHOLD:
+        # Retrain on whole dataset 
         # Build whole test set
         X = pd.concat([X_train, X_test], axis=0)
         y = pd.concat([y_train, y_test], axis=0)
@@ -108,9 +109,9 @@ def train_model(X_train, X_test, y_train, y_test):
         final_pipe.set_params(**best_params)
         final_pipe.fit(X, y)
 
-        # Save to BentoML
+        # Save to model to Bentoml
         print("Saving model to BentoML...")
-        model_ref = bentoml.sklearn.save_model(
+        tag = bentoml.sklearn.save_model(
             name=MODEL_NAME,
             model=final_pipe,
             signatures={
@@ -128,10 +129,20 @@ def train_model(X_train, X_test, y_train, y_test):
             },
         )
 
-        print(f"\nSaved model as: {model_ref}")
+        print(f"\nSaved model as: {tag}")
+
+        
+
+def load_model():
+    tag = MODEL_NAME + ":latest"
+    model_info = bentoml.sklearn.get(tag)
+    model = model_info.load_model()
+    print(f"\nLoaded model: {model_info.tag}")
+    # model = bentoml.sklearn.load_model(tag)
+    
 
     
-def main():
+def training():
     # Load data
     X_train, X_test, y_train, y_test = load_data_split(data_path=PREP_DATA_PATH)
     # data = load_data_split(data_path=PREP_DATA_PATH)
@@ -146,4 +157,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    training()
