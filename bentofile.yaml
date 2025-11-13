@@ -1,0 +1,17 @@
+service: "src.api.api:StudAdmService"
+description: "Gradient Boost Regressor Service for predicting the chance of admission of a student in a university."
+
+labels:
+  owner: "eiko"
+  project: "Admission-secure-API"
+  stage: "dev"
+
+include:
+  - src/
+  - data/
+
+models:
+  - "student_admissions_predictor:latest"
+
+python:
+  requirements_txt: "requirements.txt" 

@@ -17,6 +17,7 @@ from starlette.responses import JSONResponse
 
 from dotenv import load_dotenv
 
+
 #________________________________________________________________________________________________________
 # Definitions
 #________________________________________________________________________________________________________
@@ -29,7 +30,7 @@ MODEL_VERSION = ":latest"
 
 JWT_SECRET = os.getenv("JWT_SECRET", "dev-secret-change-me")
 JWT_ALG = "HS256"
-JWT_TTL_SECONDS = 30 * 60  # 30 min
+JWT_TTL_SECONDS = 30 * 60  # Expire time token
 
 #________________________________________________________________________________________________________
 # Utils
@@ -96,7 +97,6 @@ class InputModel(BaseModel):
 # Define Bento ML API
 #________________________________________________________________________________________________________
 
-
 @bentoml.service  # optional: (resources={"cpu": "1"})
 class StudAdmService:
     def __init__(self) -> None:
@@ -113,7 +113,7 @@ class StudAdmService:
         # DEMO ONLY — use a user DB / IdP in production
         users = {"alice": "s3cret", "bob": "hunter2"}
         if users.get(username) != password:
-            return {"error": "Invalid credentials"}
+            return JSONResponse({"error": "Invalid credentials"}, status_code=401)
 
         now = int(time.time())
         payload = {
