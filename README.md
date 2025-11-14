@@ -1,28 +1,42 @@
 # Examen BentoML
 
-Ce repertoire contient l'architecture basique afin de rendre l'évaluation pour l'examen BentoML.
+## Set up venv
 
-Vous êtes libres d'ajouter d'autres dossiers ou fichiers si vous jugez utile de le faire.
+### 1. Install pytest venv dependencis
 
-Voici comment est construit le dossier de rendu de l'examen:
+Extract the zip file and open the extracted file in terminal or code editor. The 
+run the following commands which setup the venv.
+```bash
+uv init
+uv venv
+uv pip install -r requirements.txt
+```
+--------
 
-```bash       
-├── examen_bentoml          
-│   ├── data       
-│   │   ├── processed      
-│   │   └── raw           
-│   ├── models      
-│   ├── src       
-│   └── README.md
+### 2. Activate venv
+
+Windows 
+```bash
+source .venv/Scripts/activate
 ```
 
-Afin de pouvoir commencer le projet vous devez suivre les étapes suivantes:
+Linux
+```bash
+source .venv/bin/activate
+```
 
-- Forker le projet sur votre compte github
+### 3. Extract and run image -> Start API port 3000
+```bash
+docker load -i stud_adm_service.tar
+docker image ls 
+docker run --rm -p 3000:3000 stud_adm_service:5wg46n6bis6rvlv4 
+```
+--------
 
-- Cloner le projet sur votre machine
+### 4. Extract and run image -> Start API port 3000
 
-- Récuperer le jeu de données à partir du lien suivant: [Lien de téléchargement]( https://datascientest.s3-eu-west-1.amazonaws.com/examen_bentoml/admissions.csv)
-
-
-Bon travail!
+Open second terminal and activate venv.
+```bash
+pytest -v
+```
+--------
